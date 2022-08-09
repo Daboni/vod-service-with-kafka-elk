@@ -24,7 +24,7 @@ public class SchedulerConfig {
         JobDetail jobDetail = buildJobDetail(ExecuteQuartz.class, new HashMap());
 
         try {
-            scheduler.scheduleJob(jobDetail, buildJobTrigger("30 * * * * ?"));
+            scheduler.scheduleJob(jobDetail, buildJobTrigger("* 4 * * *"));
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
