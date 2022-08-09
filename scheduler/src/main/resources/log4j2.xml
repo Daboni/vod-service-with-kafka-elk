@@ -4,7 +4,7 @@
         <Kafka name="Kafka" topic="logs">
 <!--            <JSONLayout />-->
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5p [%-7t] %F:%L - %m%n" />
-            <Property name="bootstrap.servers">34.64.116.159:9092</Property>
+            <Property name="bootstrap.servers">10.178.0.2:9092</Property>
         </Kafka>
 
         <Console name="stdout" target="SYSTEM_OUT">
