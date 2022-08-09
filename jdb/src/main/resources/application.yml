@@ -1,7 +1,6 @@
 elasticsearch:
-  host: 127.0.0.1
+  host: 175.113.247.91
   port: 9200
-  cluster_name: docker-cluster
 
 server:
   port: 9090
