@@ -1,4 +1,4 @@
 spring:
   kafka:
     producer:
-      bootstrap-servers: 10.178.0.2:9092
+      bootstrap-servers: 34.64.116.159:9092
