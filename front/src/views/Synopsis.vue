@@ -3,7 +3,7 @@
     <!--콘텐츠 설명 박스-->
     <div class="description">
       <div class="title">
-        <div class="trend">트렌드 영화</div>
+        <div class="trend">{{ this.content.type }}</div>
         <!-- <h1 class="con">{{ this.content.title }}(2022)</h1> -->
         <h1 class="con">{{ this.content.title }}({{this.content.release_year}})</h1>
         <div class="certification">{{ this.content.certification }}</div>
@@ -114,6 +114,12 @@ export default {
         this.content = this.content.result_data
         console.log(this.content)
         this.content.release_year = this.content.release_date.substr(0,4)
+        if(this.content.content_id.substr(0,2) == "TV") {
+          this.content.type = "트렌드 TV";
+        }
+        else {
+          this.content.type = "트렌드 영화";
+        }
         // console.log(this.content.release_year)
       })
       .catch(function(error){
