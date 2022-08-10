@@ -89,7 +89,7 @@ public class ApiCallService {
             uri += "&append_to_response=content_ratings";
 
             TmdbResponse.SynopsisTVRes synopsisTVRes = WebClient.builder().build().get().uri(uri).retrieve().bodyToMono(TmdbResponse.SynopsisTVRes.class).block();
-            String s = WebClient.builder().build().get().uri(uri).retrieve().bodyToMono(String.class).block();
+//            String s = WebClient.builder().build().get().uri(uri).retrieve().bodyToMono(String.class).block();
 
             String content_id = "TV" + synopsisTVRes.id;
             String title = synopsisTVRes.name;
@@ -97,7 +97,7 @@ public class ApiCallService {
             String poster_path = path + synopsisTVRes.poster_path;
             List<String> genres = new ArrayList<>();
             Integer runningTime = synopsisTVRes.episode_run_time.size()==0 ? 50 : synopsisTVRes.episode_run_time.get(0);
-            String overview = synopsisTVRes.overview;
+            String overview = synopsisTVRes.overview.replaceAll("\\r","");
             if(overview.equals("")) overview="정보 없음";
             String director = "";
             List<String> actors = new ArrayList<>();
@@ -169,7 +169,7 @@ public class ApiCallService {
             String poster_path = path + synopsisMVRes.poster_path;
             List<String> genres = new ArrayList<>();
             Integer runningTime = synopsisMVRes.runtime;
-            String overview = synopsisMVRes.overview;
+            String overview = synopsisMVRes.overview.replaceAll("\\r","");
             if(overview.equals("")) overview="정보 없음";
             String director = "";
             List<String> actors = new ArrayList<>();
@@ -207,7 +207,6 @@ public class ApiCallService {
                 genres.add(genr.get("name"));
             }
             for(Map<String,String> cert : synopsisMVRes.releases.get("countries")) {
-                if(cert.get("iso_3166_1") == null) continue;
                 if(cert.get("iso_3166_1").equals("KR")) certification = cert.get("certification").equals("") ? certification : cert.get("certification");
             }
 
@@ -227,12 +226,13 @@ public class ApiCallService {
             TmdbResponse.RecommendationsTV recomRes = WebClient.builder().build().get().uri(recommUri).retrieve().bodyToMono(TmdbResponse.RecommendationsTV.class).block();
             log.info("mv recomm uri : {}",recommUri);
             for(int k=0;k<recomRes.results.size();k++) {
-                if(k==5) break;
 
+                if(k==5) break;
                 Map<String,String> recommContent = new HashMap<>();
                 Map<String,Object> res = recomRes.results.get(k);
-
-                recommContent.put("content_id","MV" + res.get("id"));
+                if(res.get("release_date").toString().equals("")) continue;
+                if(res.get("release_date").toString().equals(""))
+                    recommContent.put("content_id","MV" + res.get("id"));
                 recommContent.put("title",res.get("title").toString());
                 recommContent.put("release_date",res.get("release_date").toString());
                 recommContent.put("poster_path","https://image.tmdb.org/t/p/w185"+res.get("poster_path"));
@@ -243,7 +243,7 @@ public class ApiCallService {
                     .genres(genres).running_time(runningTime).overview(overview).director(director).actors(actors).certification(certification)
                     .voteAverage(voteAverage).date(date).recomm(recomm).userRating(userRating).build();
 
-            System.out.println(synopsis);
+//            System.out.println(synopsis);
             log.info("mv synopsis : {}",synopsis.toString());
 
             kafkaTemplate2.send("springboot-kafka-elk",synopsis);
