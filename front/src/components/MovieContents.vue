@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     getList: function() {
-      axios.get("http://localhost:9090/v1/euxp/api/get/movie").then(response => {
+      axios.get("http://34.64.116.159:9090/v1/euxp/api/get/movie").then(response => {
         // console.log(response.data.result_data)
         this.contents = response.data.result_data
         this.contents = this.contents.result_data
