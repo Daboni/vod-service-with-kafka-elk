@@ -207,7 +207,8 @@ public class ApiCallService {
                 genres.add(genr.get("name"));
             }
             for(Map<String,String> cert : synopsisMVRes.releases.get("countries")) {
-                if(cert.get("iso_3166_1").equals("KR")) certification = cert.get("certification");
+                if(cert.get("iso_3166_1") == null) continue;
+                if(cert.get("iso_3166_1").equals("KR")) certification = cert.get("certification").equals("") ? certification : cert.get("certification");
             }
 
             String creditUri = "https://api.themoviedb.org/3/movie/"+id+"/credits?api_key="+apiKey+lang;
