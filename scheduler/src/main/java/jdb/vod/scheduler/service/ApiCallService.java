@@ -132,8 +132,8 @@ public class ApiCallService {
             String recommUri = "https://api.themoviedb.org/3/tv/"+id+"/recommendations?api_key="+apiKey+lang+"&page=1";
             TmdbResponse.RecommendationsTV recomRes = WebClient.builder().build().get().uri(recommUri).retrieve().bodyToMono(TmdbResponse.RecommendationsTV.class).block();
             log.info("tv recomm uri : {}", recommUri);
-            for(int k=0;k<5;k++) {
-                if(recomRes.results.size()==0) break;
+            for(int k=0;k<recomRes.results.size();k++) {
+                if(k==5) break;
                 Map<String,String> recommContent = new HashMap<>();
                 Map<String,Object> res = recomRes.results.get(k);
                 recommContent.put("content_id","TV" + res.get("id"));
@@ -225,8 +225,8 @@ public class ApiCallService {
             String recommUri = "https://api.themoviedb.org/3/movie/"+id+"/recommendations?api_key="+apiKey+lang+"&page=1";
             TmdbResponse.RecommendationsTV recomRes = WebClient.builder().build().get().uri(recommUri).retrieve().bodyToMono(TmdbResponse.RecommendationsTV.class).block();
             log.info("mv recomm uri : {}",recommUri);
-            for(int k=0;k<5;k++) {
-                if(recomRes.results.size()==0) break;
+            for(int k=0;k<recomRes.results.size();k++) {
+                if(k==5) break;
 
                 Map<String,String> recommContent = new HashMap<>();
                 Map<String,Object> res = recomRes.results.get(k);

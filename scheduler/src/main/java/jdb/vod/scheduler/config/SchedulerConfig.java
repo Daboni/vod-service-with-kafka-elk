@@ -25,7 +25,7 @@ public class SchedulerConfig {
 
         try {
 //            scheduler.scheduleJob(jobDetail, buildJobTrigger("30 * * * * ?"));
-            scheduler.scheduleJob(jobDetail, buildJobTrigger("0 4 * * * ?"));
+            scheduler.scheduleJob(jobDetail, buildJobTrigger("0 0 4 * * ?"));
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
