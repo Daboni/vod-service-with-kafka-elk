@@ -17,7 +17,7 @@ public class Synopsis {
     String title;
     String release_date;
     String poster_path;
-    List<String> genrs;
+    List<String> genres;
     Integer running_time;
     String overview;
     String director;

@@ -95,7 +95,7 @@ public class ApiCallService {
             String title = synopsisTVRes.name;
             String release_date = synopsisTVRes.first_air_date;
             String poster_path = path + synopsisTVRes.poster_path;
-            List<String> genrs = new ArrayList<>();
+            List<String> genres = new ArrayList<>();
             Integer runningTime = synopsisTVRes.episode_run_time.size()==0 ? 50 : synopsisTVRes.episode_run_time.get(0);
             String overview = synopsisTVRes.overview;
             if(overview.equals("")) overview="정보 없음";
@@ -112,7 +112,7 @@ public class ApiCallService {
             }
 
             for(Map<String,String> genr : synopsisTVRes.genres) {
-                genrs.add(genr.get("name"));
+                genres.add(genr.get("name"));
             }
             log.info("tv detail uri : {}", uri);
             for(Map<String,String> cert : synopsisTVRes.content_ratings.get("results")) {
@@ -143,7 +143,7 @@ public class ApiCallService {
                 recomm.add(recommContent);
             }
             Synopsis synopsis = Synopsis.builder().type("synopsis").content_id(content_id).title(title).release_date(release_date).poster_path(poster_path)
-                    .genrs(genrs).running_time(runningTime).overview(overview).director(director).actors(actors).certification(certification)
+                    .genres(genres).running_time(runningTime).overview(overview).director(director).actors(actors).certification(certification)
                     .voteAverage(voteAverage).date(date).recomm(recomm).userRating(userRating).build();
             log.info("tv synopsis : {}",synopsis.toString());
             kafkaTemplate2.send("springboot-kafka-elk",synopsis);
@@ -167,7 +167,7 @@ public class ApiCallService {
             String title = synopsisMVRes.title;
             String release_date = synopsisMVRes.release_date;
             String poster_path = path + synopsisMVRes.poster_path;
-            List<String> genrs = new ArrayList<>();
+            List<String> genres = new ArrayList<>();
             Integer runningTime = synopsisMVRes.runtime;
             String overview = synopsisMVRes.overview;
             if(overview.equals("")) overview="정보 없음";
@@ -204,7 +204,7 @@ public class ApiCallService {
                 userRating = Math.ceil(Double.valueOf(searchList.getBody().getItems().get(0).get("userRating")) / 2 * 10) / 10;
 
             for(Map<String,String> genr : synopsisMVRes.genres) {
-                genrs.add(genr.get("name"));
+                genres.add(genr.get("name"));
             }
             for(Map<String,String> cert : synopsisMVRes.releases.get("countries")) {
                 if(cert.get("iso_3166_1").equals("KR")) certification = cert.get("certification");
@@ -239,7 +239,7 @@ public class ApiCallService {
             }
 
             Synopsis synopsis = Synopsis.builder().type("synopsis").content_id(content_id).title(title).release_date(release_date).poster_path(poster_path)
-                    .genrs(genrs).running_time(runningTime).overview(overview).director(director).actors(actors).certification(certification)
+                    .genres(genres).running_time(runningTime).overview(overview).director(director).actors(actors).certification(certification)
                     .voteAverage(voteAverage).date(date).recomm(recomm).userRating(userRating).build();
 
             System.out.println(synopsis);
