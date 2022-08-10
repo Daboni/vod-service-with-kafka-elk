@@ -1,7 +1,7 @@
 elasticsearch:
-  host: 192.168.40.25
+  host: 175.113.247.91
   port: 9200
-  cluster_name: docker-cluster
+  cluster_name: euxp-stg-suy
 
 server:
   port: 9090
