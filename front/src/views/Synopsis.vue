@@ -107,7 +107,7 @@ export default {
   },
   methods: {
       getSynop: function() {
-        axios.get("http://localhost:9090/v1/euxp/api/get/"+this.$route.params.id).then(response => {
+        axios.get("http://34.64.116.159:9090/v1/euxp/api/get/"+this.$route.params.id).then(response => {
         // console.log(response.data.result_data)
         this.content = response.data.result_data
         // console.log(this.content.result_data)
