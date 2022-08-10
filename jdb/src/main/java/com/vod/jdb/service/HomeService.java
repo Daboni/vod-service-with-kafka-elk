@@ -82,7 +82,7 @@ public class HomeService {
 
         Map<String,Object> resultMap = new HashMap<>();
 
-        SynopsisDoc synopsisDoc = synopsisRepository.findByContentId(content_id);
+        SynopsisDoc synopsisDoc = synopsisRepository.findByContentIdOrderByDateDesc(content_id);
         System.out.println(synopsisDoc.toString());
         resultMap.put("result_data",synopsisDoc);
         return resultMap;

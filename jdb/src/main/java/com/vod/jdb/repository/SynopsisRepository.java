@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SynopsisRepository extends ElasticsearchRepository<SynopsisDoc,String> {
 
-    SynopsisDoc findByContentId(String contentId);
+    SynopsisDoc findByContentIdOrderByDateDesc(String contentId);
 
 }
