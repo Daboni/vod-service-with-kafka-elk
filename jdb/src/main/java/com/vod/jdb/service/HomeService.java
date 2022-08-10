@@ -7,6 +7,10 @@ import com.vod.jdb.repository.SynopsisRepository;
 import com.vod.jdb.repository.TrendingMovieRepository;
 import com.vod.jdb.repository.TrendingTVRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +27,8 @@ public class HomeService {
     private final TrendingMovieRepository trendingMovieRepository;
     private final SynopsisRepository synopsisRepository;
 
+    private final ElasticsearchOperations elasticsearchOperations;
+
     @Transactional
     public void save(TrendingTVDoc dto) {
         trendingTVRepository.save(dto);
@@ -37,13 +43,12 @@ public class HomeService {
         Map<String,Object> resultMap = new HashMap<>();
 
         String date = LocalDate.now().toString();
-        List<TrendingTVDoc> trendingTVDocs = trendingTVRepository.findByDateEquals(date);
-        for(TrendingTVDoc tr : trendingTVDocs)
-            System.out.println(tr);
-        List<TrendingTVDoc> tvs = trendingTVDocs.stream().filter((c) -> c.getContent_id().startsWith("TV")).collect(Collectors.toList());
 
-        for(TrendingTVDoc tr : tvs)
-            System.out.println(tr);
+        Criteria cri = Criteria.where("date").is(date);
+        Query query = new CriteriaQuery(cri);
+        SearchHits<TrendingTVDoc> search = elasticsearchOperations.search(query, TrendingTVDoc.class);
+
+        List<TrendingTVDoc> tvs = search.getSearchHits().stream().map(SearchHit::getContent).collect(Collectors.toList()).stream().filter((c) -> c.getContent_id().startsWith("TV")).collect(Collectors.toList());
 
         resultMap.put("result_data",tvs);
 
@@ -55,9 +60,18 @@ public class HomeService {
         Map<String,Object> resultMap = new HashMap<>();
 
         String date = LocalDate.now().toString();
-        List<TrendingMovieDoc> trendingMovieDocs = trendingMovieRepository.findByDateEquals(date);
+//        System.out.println(date);
+//        List<TrendingMovieDoc> trendingMovieDocs = trendingMovieRepository.findByDateEquals(date);
 
-        List<TrendingMovieDoc> mvs = trendingMovieDocs.stream().filter((c) -> c.getContent_id().startsWith("MV")).collect(Collectors.toList());
+//        List<TrendingMovieDoc> mvs = trendingMovieDocs.stream().filter((c) -> c.getContent_id().startsWith("MV")).collect(Collectors.toList());
+
+//        elasticsearchOperations.queryForObject()
+
+        Criteria cri = Criteria.where("date").is(date);
+        Query query = new CriteriaQuery(cri);
+        SearchHits<TrendingMovieDoc> search = elasticsearchOperations.search(query, TrendingMovieDoc.class);
+
+        List<TrendingMovieDoc> mvs = search.getSearchHits().stream().map(SearchHit::getContent).collect(Collectors.toList()).stream().filter((c) -> c.getContent_id().startsWith("MV")).collect(Collectors.toList());
 
         resultMap.put("result_data",mvs);
         return resultMap;

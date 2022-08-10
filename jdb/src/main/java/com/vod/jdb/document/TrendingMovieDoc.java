@@ -19,7 +19,6 @@ public class TrendingMovieDoc {
     String title;
     String release_date;
     String poster_path;
-    @Field(type = FieldType.Date)
     String date;
 
 }
