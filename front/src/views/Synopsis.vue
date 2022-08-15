@@ -114,6 +114,9 @@ export default {
         this.content = this.content.result_data
         console.log(this.content)
         this.content.release_year = this.content.release_date.substr(0,4)
+        if(this.content.userRating == 0) {
+          this.content.userRating = this.content.voteAverage - 0.1;
+        }
         if(this.$route.params.id.substr(0,2) == "TV") {
           this.content.type = "트렌드 TV";
         }
