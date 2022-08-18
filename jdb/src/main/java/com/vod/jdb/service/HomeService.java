@@ -60,12 +60,6 @@ public class HomeService {
         Map<String,Object> resultMap = new HashMap<>();
 
         String date = LocalDate.now().toString();
-//        System.out.println(date);
-//        List<TrendingMovieDoc> trendingMovieDocs = trendingMovieRepository.findByDateEquals(date);
-
-//        List<TrendingMovieDoc> mvs = trendingMovieDocs.stream().filter((c) -> c.getContent_id().startsWith("MV")).collect(Collectors.toList());
-
-//        elasticsearchOperations.queryForObject()
 
         Criteria cri = Criteria.where("date").is(date);
         Query query = new CriteriaQuery(cri);

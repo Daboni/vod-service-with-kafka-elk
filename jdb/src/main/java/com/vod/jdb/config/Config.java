@@ -33,16 +33,6 @@ public class Config {
     @Value("${elasticsearch.cluster_name")
     private String clusterName;
 
-//    @Bean
-//    public Client client() throws Exception {
-//        Settings settings = Settings.builder().put("cluster.name",clusterName).build();
-//
-//        TransportClient client = new PreBuiltTransportClient(settings);
-//        client.addTransportAddress(new TransportAddress(InetAddress.getByName(host),port));
-//
-//        return client;
-//    }
-
     @Bean
     public ElasticsearchOperations elasticsearchTemplate() throws Exception {
         return new ElasticsearchRestTemplate(client());
